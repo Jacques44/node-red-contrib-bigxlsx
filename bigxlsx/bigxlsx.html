@@ -1,0 +1,76 @@
+<!--
+  Copyright 2013, 2014 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="bigxlsx">
+
+    <div class="form-row">
+         <label for="node-input-filename"><i class="fa fa-file"></i> <span data-i18n="bigxlsx.label.filename"></span></label>
+         <input type="text" id="node-input-filename" data-i18n="[placeholder]bigfile.label.filename">
+    </div> 
+
+    <div class="form-row">
+         <label for="node-input-sheet"><i class="fa fa-plus-open"></i> <span data-i18n="bigxlsx.label.sheet"></span></label>
+         <input type="text" id="node-input-sheet" data-i18n="[placeholder]bigxlsx.label.sheet">
+    </div>   
+
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-direction" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-direction" style="width: 70%;"><span data-i18n="bigxlsx.label.direction"></span></label>
+    </div>  
+
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-headers" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-headers" style="width: 70%;"><span data-i18n="bigxlsx.label.headers"></span></label>
+    </div>         
+
+     <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="bigxlsx.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]bigxlsx.label.name">
+    </div> 
+
+</script>
+
+<script type="text/x-red" data-help-name="bigxlsx">
+    <p>Reads an Excel file in XLSX format</p>
+
+</script>
+
+<script type="text/javascript">
+
+    RED.nodes.registerType('bigxlsx', {
+        category: 'function',
+        defaults: {
+            name: { value: "" },
+            filename: { value: "" },
+            sheet: { value: "" },
+            direction: { value: true }, // true: 1 ligne per document // false: 1 column per document
+            headers: { value: false }   // first row = headers
+        },       
+        color:"#0099cc",
+        inputs:1,
+        outputs:2,
+        icon: "excel.png",
+        label: function() {
+            return this.name||"Big XLSX";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        }
+    });
+
+</script>

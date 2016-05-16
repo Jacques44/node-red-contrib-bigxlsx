@@ -1,0 +1,12 @@
+{
+    "bigxlsx": {
+        "label": {
+            "nodelabel": "Big XLSX",
+            "name": "Name",
+            "filename": "Filename",
+            "sheet": "Sheet",
+            "headers": "First document for headers",
+            "direction": "Line by line documents"
+        }    
+    }
+}

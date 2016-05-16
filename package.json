@@ -1,0 +1,27 @@
+{
+  "name": "node-red-contrib-bigxlsx",
+  "version": "1.0.0",
+  "description": "A Big XLSX",
+  "dependencies": {
+    "node-red-biglib": "^1.2.0",
+    "node-xlsx": "^0.7.1"
+  },
+  "keywords": [
+    "node-red"
+  ],
+  "node-red": {
+    "nodes": {
+      "bigxlsx": "bigxlsx/bigxlsx.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jacques44/node-red-contrib-bigxlsx"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Jacques44/node-red-contrib-bigxlsx/issues"
+  },
+  "homepage": "https://github.com/Jacques44/node-red-contrib-bigxlsx",
+  "_id": "node-red-contrib-bigxlsx@1.0.0"
+}
