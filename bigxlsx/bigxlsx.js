@@ -36,6 +36,7 @@ module.exports = function(RED) {
 
     var biglib = require('node-red-biglib');
     var xlsx = require('node-xlsx');
+    var XLSX = require('xlsx');
     var stream = require('stream');
     var fs = require('fs');
 
@@ -81,6 +82,11 @@ module.exports = function(RED) {
 
           try {
 
+            var workbook = XLSX.readFile(config.filename);
+
+            var js = XLSX.utils.sheet_to_json(workbook.Sheets["Sheet2"]);
+            console.log(js[1]);
+
             var data = xlsx.parse(fs.readFileSync(config.filename));
 
             var s = config.sheets || [];
@@ -88,7 +94,7 @@ module.exports = function(RED) {
 
             var wanted_sheets = {};
             (Array.isArray(s)?s:[s]).map(function(i) { wanted_sheets[i] = 1 });
-
+   
             var wanted = function(s) { return 1 };
             if (s.length) {
               wanted = function(s) { return wanted_sheets.hasOwnProperty(s) }
@@ -115,12 +121,21 @@ module.exports = function(RED) {
 
           var next_sheet = function() {
 
-            i_sheet++;
-            if (i_sheet = sheets.length) return false;
+            try {
+              console.log("# of sheets: " + sheets.length);
+              i_sheet++;
+              if (i_sheet == sheets.length) return false;
 
-            i_doc = -1;
-            if (first_is_header) heads = sheets[i_sheet][0];
-            i_doc++;
+              i_doc = -1;
+              if (first_is_header) {
+                heads = sheets[i_sheet].data[++i_doc];
+              }
+
+              return true;
+            } catch (err) {
+
+              throw err; 
+            }
 
           }
 
@@ -128,16 +143,21 @@ module.exports = function(RED) {
 
             // init?
             if (i_doc == -1) {
-              if (!next_sheet()) return false;
+              if (!next_sheet()) {
+                return false;
+              }
             }
 
             i_doc++;
 
             // Last document for the sheet?
-            if (i_doc == sheets[i_sheet].length) {
-              if (!next_sheet()) return false;
+            if (i_doc == sheets[i_sheet].data.length) {
+              if (!next_sheet()) {
+                return false;
+              }
             }
 
+            //console.log("Has next line");
             return true;
 
           }
@@ -147,19 +167,25 @@ module.exports = function(RED) {
 
             try {
 
-              console.log("read call");
+              //console.log("read call");
 
-              if (!next_line()) return this.push(null);
+              if (!next_line()) {
+                console.log("the end");
+                return this.push(null);
+              }
 
               if (first_is_header) {
                 var ret = {};
-                data[i_sheet][i_doc].forEach(function(v, i) {
+                //console.log(data[i_sheet]);
+                sheets[i_sheet].data[i_doc].forEach(function(v, i) {
                   if (i < heads.length) {
                     ret[heads[i]] = v;
                   } else {
-                    ret["_" + i] = v;
+                    ret["Col" + i] = v;
                   }
                 });
+                //console.log(ret);
+                this.push(ret);
               } else {
                 this.push(data[i_sheet][i_doc]);
               }
